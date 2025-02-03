@@ -8,8 +8,7 @@ The File Deviation Detector v2.0 is a forensic tool designed to compute cryptogr
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
+- [Overview & Features](#overview--features)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -17,18 +16,6 @@ The File Deviation Detector v2.0 is a forensic tool designed to compute cryptogr
   - [Multiple Files](#multiple-files)
   - [Whole Directory](#whole-directory)
   - [CSV Output](#csv-output)
-- [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
-
-- [Overview & Features](#overview--features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Single File]
-  - [Multiple Files]
-  - [Whole Directory with Baseline Comparison]
-  - [CSV Output]
 - [Baseline CSV File](#baseline-csv-file)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
@@ -63,7 +50,7 @@ The File Deviation Detector v2.0 is a forensic tool designed to compute cryptogr
 
 1. **Clone or Download the Repository:**
    ```bash
-   git clone https://github.com/yourusername/file-deviation-detector.git
+   git clone https://github.com/0xd33pth0ught/file-deviation-detector.git
    cd file-integrity-checker
 
 ## Usage
