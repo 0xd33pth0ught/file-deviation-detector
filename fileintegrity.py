@@ -1,4 +1,4 @@
-#!/usrbin/env python3
+#!/usr/bin/env python3
 """
 Author: 0xd33pth0ught
 Date: 3 February 2025
