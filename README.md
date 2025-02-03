@@ -2,7 +2,7 @@
 
 - Developer: 0xd33pth0ught
 - Init Date: 03 February 2025
-- Version: 1.1
+- Version: 1.2
 
 A simple Python script to compute hash values (MD5 or SHA-256) for files. This tool is designed to help you verify file integrity quickly and efficiently. You can use it to process a single file, multiple files, or even an entire directory (via shell globbing).
 

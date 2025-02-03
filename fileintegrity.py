@@ -2,7 +2,7 @@
 """
 Author: 0xd33pth0ught
 Date: 3 February 2025
-Version: 1.1
+Version: 1.2
 
 File Integrity
 This script computes hash values (MD5 or SHA-256) of a file to verify its integrity.
@@ -10,6 +10,7 @@ This script computes hash values (MD5 or SHA-256) of a file to verify its integr
 
 import argparse, sys
 import hashlib
+import os
 
 def compute_hash(file_path, algorithm="sha256", block_size=65536):
     """
@@ -21,6 +22,11 @@ def compute_hash(file_path, algorithm="sha256", block_size=65536):
     :return: the hexidecimal hash string
     :raises: ValueError: If an unsupported algorithm is provided
     """
+
+    # Check if the file_path is a directory
+    if os.path.isdir(file_path):
+        print(f"[!] Skipping directory: {file_path}", file=sys.stderr)
+        return None
 
     if algorithm not in("md5", "sha256"):
         raise ValueError("[!] Unsupported algorithm::requires 'md5' or 'sha256'.")
