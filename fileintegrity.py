@@ -2,7 +2,7 @@
 """
 Author: 0xd33pth0ught
 Date: 3 February 2025
-Version: 1.0
+Version: 1.1
 
 File Integrity
 This script computes hash values (MD5 or SHA-256) of a file to verify its integrity.
@@ -36,15 +36,19 @@ def compute_hash(file_path, algorithm="sha256", block_size=65536):
         print(f"[!] Error -> File `{file_path}` not found.", file=sys.stderr)
         sys.exit(1)
 
+
 def main():
     print("--------- File Integrity Check ---------")
     parser = argparse.ArgumentParser(description="File Integrity Checker")
-    parser.add_argument("file", help="Path to the file to check")
+    parser.add_argument("files", nargs="+", help="Path(s) to the file(s) to check")
     parser.add_argument("-a", "--algorithm", choices=["md5", "sha256"], default="sha256", help="Hash Algorithm to use (default: sha256)")
     args = parser.parse_args()
 
-    file_hash = compute_hash(args.file, args.algorithm)
-    print(f"{args.algorithm.upper()} hash of {args.file}: {file_hash}")
+    # Process each file provided on the command line.
+    for file_path in args.files:
+        computed_hash = compute_hash(file_path, args.algorithm)
+        if computed_hash:
+            print(f"{args.algorithm.upper()} hash of {file_path}: {computed_hash}")
 
 if __name__ == "__main__":
     main()
