@@ -1,10 +1,10 @@
-# File Integrity Checker
+# File Deviation Detector
 
 - Developer: 0xd33pth0ught
 - Init Date: 03 February 2025
-- Version: 1.3
+- Version: 2.0
 
-A simple Python script to compute hash values for files and optionally output the results to a CSV file. This tool is useful for verifying file integrity in digital forensic investigations and routine system audits.
+The File Deviation Detector v2.0 is a forensic tool designed to compute cryptographic hashes (SHA256 and MD5) for files and compare them against a provided baseline CSV file. It is useful for detecting unauthorized changes, anomalies, or file deviations in a single file, multiple files, or entire directories (using glob patterns). This tool is especially beneficial for forensic investigations where verifying the integrity of system or application files is critical.
 
 ## Table of Contents
 
@@ -21,60 +21,103 @@ A simple Python script to compute hash values for files and optionally output th
 - [Contributing](#contributing)
 - [License](#license)
 
-## Overview
+- [Overview & Features](#overview--features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Single File]
+  - [Multiple Files]
+  - [Whole Directory with Baseline Comparison]
+  - [CSV Output]
+- [Baseline CSV File](#baseline-csv-file)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
-The File Integrity Checker is a command-line utility written in Python. It computes cryptographic hash values (either SHA256 or MD5) for one or more files, making it easy to verify if files have been modified or tampered with. The script can process a single file, multiple files, or all files in a directory (using shell globbing).
-
-## Features
+## Overview & Features
 
 - **Hash Computation:**  
-  Compute either SHA256 (default) or MD5 hashes for files.
+  Computes both SHA256 and MD5 hashes for each file. Although it defaults to SHA256, both hash values are always returned.
 
-- **Flexible Input:**  
-  Process a single file, multiple files, or an entire directory (via shell globbing).
+- **Flexible File Selection:**  
+  Accepts one or more file paths or glob patterns (e.g., `/usr/bin/*`). It automatically resolves wildcards and processes every matching file.
 
-- **CSV Output:**  
-  Optionally output the results to a CSV file with the columns: `Filename`, `SHA256`, and `MD5`. Depending on the chosen algorithm, one of the hash columns will be filled while the other remains empty.
+- **CSV Reporting:**  
+  If the `--csv` option is provided, results (with headers: `Filename, SHA256, MD5`) are saved to the specified CSV file.
 
-- **Robust Error Handling:**  
-  Skips directories and handles file-not-found errors gracefully.
-
+- **Baseline Comparison:**  
+  When a baseline CSV is provided via the `--baseline` argument, the script:
+  - Validates that each file listed in the baseline belongs to one of the target directories.
+  - Compares the computed hash values against the baseline.
+  - Flags and logs any discrepancies (missing files or mismatched hashes) as suspicious.
+  - Suspicious entries are appended to `suspicious_entries.csv` in the current working directory.
+.
 ## Requirements
 
-- Python 3.6 or later
+- **Python Version:**
+  Python 3.8 or later
+
+- **Dependencies:**  
+  The script uses only standard Python libraries: `argparse`, `hashlib`, `csv`, `glob`, `os`, and `sys`.
 
 ## Installation
 
-1. **Clone the Repository:**
-
+1. **Clone or Download the Repository:**
    ```bash
-   git clone https://github.com/0xd33pth0ught/fileintegrity.git
-   cd fileintegrity
+   git clone https://github.com/yourusername/file-deviation-detector.git
+   cd file-integrity-checker
 
 ## Usage
 
-**Checking the integrity of a single file**
+Run the script from the command line using Python. Below are several usage examples:
 
+**Prints the computed SHA256 and MD5 hashes for the file:**
 ```
-python3 fileintegrity.py path/to/file.txt
-```
-
-**Checking the integrity of multiple files**
-```
-python3 fileintegrity.py file1.txt file2.txt file3.txt
+python3 file-deviation-detecter.py /path/to/single_file.txt
 ```
 
-**Checking the intergrit of a directory of files**
+**Computes the hash values for the specified files and writes the results to an output CSV file:**
 ```
-python3 fileintegrity.py /path/to/directory/*
-```
-
-**Outputting to a CSV**
-```
-python3 fileintegrity.py /path/to/directory/* --csv /path/to/output.csv
+python3 file-deviation-detecter.py /path/to/file1.txt /path/to/file2.txt --csv /path/to/output.csv
 ```
 
-**Hashing Algorithm Options (default: sha256)**
+**Processes all files matching the glob (e.g., all files in /usr/bin)/* and compares them against a provided baseline CSV. Only discrepancies (suspicious entries) will be highlighted in red and logged to suspicious_entries.csv**
 ```
--a/--algorithm md5
+python3 file-deviation-detecter.py "/usr/bin/*" --baseline /path/to/baseline.csv
+
 ```
+
+## Baseline CSV File
+
+**Important:** You must provide your own baseline CSV file because baselines will differ depending on the system and/or environment. The baseline CSV should be generated in a known, trusted state of your file system.
+
+**CSV Format:**
+The CSV file must include headers with the following columns:
+    Filename: Absolute file path.
+    SHA256: SHA256 hash value of the file.
+    MD5: MD5 hash value of the file.
+
+Example CSV:
+```
+Filename,SHA256,MD5
+/usr/bin/example1,abcdef1234567890...,12345abcdef67890...
+/usr/bin/example2,abcdef0987654321...,09876abcdef54321...
+```
+
+**Creating a baseline**
+To create a baseline for your system or environment:
+1. Run the script without the --baseline option and with the --csv option to output the current state.
+2. Verify the output and, once confirmed as the known good state, use the generated CSV as your baseline for future comparisons.
+
+## Troubleshooting
+
+- **No Valid Files Found:**
+  Ensure that the file paths or glob patterns provided match files on your system.
+
+- **Baseline Mismatch Error:**
+  If a baseline CSV entry does not belong to one of the target directories, the script will exit with an error. Confirm that your baseline CSV file is from the same system/environment as the target files.
+
+- **Permission Issues:**
+  Make sure you have the necessary read permissions for the files being processed and write permissions for the directory where the CSV files will be created.
+
+## License
+This project is licensed under the MIT License – see the LICENSE file for details.
