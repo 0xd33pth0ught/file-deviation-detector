@@ -1,8 +1,8 @@
 # File Integrity Checker
 
-Developer: 0xd33pth0ught
-Init Date: 03 February 2025
-Version: 1.0
+- Developer: 0xd33pth0ught
+- Init Date: 03 February 2025
+- Version: 1.0
 
 A simple Python script to compute and verify file hashes (MD5 and SHA-256) for file integrity checks. This tool is designed to help digital forensic professionals and developers ensure that files have not been altered by comparing their current hash values with known baselines.
 
